@@ -13,6 +13,12 @@ backend
 npm install
 npm run dev
 
+login id: Patient1
+pw: 123
+
+login id: Expert1
+pw: 123
+
 Data structure
 My data structure is use a Node 
 Node = {
