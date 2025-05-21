@@ -41,12 +41,10 @@ const PatientDashboard: React.FC<Props> = ({ userId, treeData, setTreeData }) =>
 
   return (
     <View style={styles.container}>
-      {/* Today's Date */}
       <Text style={styles.date}>
         Today: {new Date().toLocaleDateString()}
       </Text>
 
-      {/* Log Section */}
       <View style={styles.logBox}>
         <Text style={styles.label}>Log</Text>
         <TextInput
@@ -76,7 +74,6 @@ const PatientDashboard: React.FC<Props> = ({ userId, treeData, setTreeData }) =>
         </TouchableOpacity>
       </View>
 
-      {/* Settings Tree */}
       <Patient
         userId={userId}
         treeData={treeData}

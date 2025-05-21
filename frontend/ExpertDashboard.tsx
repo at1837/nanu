@@ -12,7 +12,7 @@ import type { Node } from "./App";
 
 type Props = {
   userId: string;
-  treeData: Node[]; // keep this for future use
+  treeData: Node[]; 
 };
 
 type UserSetting = {
