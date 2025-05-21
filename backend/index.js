@@ -39,6 +39,19 @@ const seedAdminUser = async () => {
       console.log('Patient1 user already exists.');
     }
 
+    const patienExists2 = await User.findOne({ user_id: 'Patient2' });
+    if (!patienExists2) {
+      const patientUser2 = new User({
+        user_id: 'Patient2',
+        password: '123',
+        type: "Patient"
+      });
+      await patientUser2.save();
+      console.log('Default Patient2 user created: patient2 / 123');
+    } else {
+      console.log('Patient2 user already exists.');
+    }
+
     const expertExists = await User.findOne({ user_id: 'Expert1' });
     if (!expertExists) {
       const expertUser = new User({

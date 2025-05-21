@@ -135,7 +135,7 @@ router.get('/setting', async (req, res) => {
     if (!settingDoc) {
       settingDoc = await Setting.create({
         user_id,
-        setting: defaultSetting, 
+        setting: transformToNodeTree(defaultSetting), 
       });
     }
 
