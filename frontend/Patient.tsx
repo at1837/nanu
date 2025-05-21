@@ -65,7 +65,6 @@ const Patient: React.FC<Props> = ({ userId, treeData, setTreeData }) => {
     return updated;
   };
 
-
   return (
     <View style={styles.container}>
       {treeData.map((node) => {
