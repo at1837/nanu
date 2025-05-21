@@ -3,6 +3,7 @@ import { Setting } from '../models/settingModel.js';
 import { Log } from '../models/logModel.js';
 const router = express.Router();
 import { User } from "../models/userModel.js"; 
+import { Book } from "../models/bookModel.js"; 
 
 const defaultSetting = {
   settings: {
@@ -13,7 +14,7 @@ const defaultSetting = {
         android: false,
         ios: true,
       },
-    },
+    },    
     privacy: {
       location: false,
       camera: true,
@@ -145,6 +146,55 @@ router.get('/setting', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+const normalizeDate = (inputDate) => {
+  const date = new Date(inputDate);
+  const mm = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-based
+  const dd = String(date.getDate()).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  return `${mm}/${dd}/${yyyy}`;
+};
+
+router.post('/book', async (req, res) => {
+  try {
+    const { user_id, date, slot, name, email, service } = req.body;
+
+    if (!user_id || !date || !slot || !name || !email || !service) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
+
+    const user = await User.findOne({ user_id });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const normalizedDate = normalizeDate(date);
+    const existingBooking = await Book.findOne({
+      date: normalizedDate,
+      slot,
+    });
+
+    if (existingBooking) {
+      return res.status(409).json({ message: "Slot already booked." });
+    }
+    
+    const newBooking = await Book.create({
+      user_id,
+      date: normalizedDate,
+      slot,
+      name,
+      email,
+      service,
+    });
+
+    return res.status(201).json({ message: "Booking successful", booking: newBooking });
+  } catch (error) {
+    console.error("Error during booking:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 
 export default router;

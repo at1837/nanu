@@ -5,6 +5,7 @@ import settingRoute from './routes/settingRoute.js';
 import userRoute from './routes/userRoute.js';
 import cors from 'cors';
 import { User } from './models/userModel.js';   
+import { Book } from './models/bookModel.js';   
 
 dotenv.config();
 
