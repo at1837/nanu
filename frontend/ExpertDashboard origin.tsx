@@ -9,13 +9,10 @@ import {
 } from "react-native";
 import axios from "axios";
 import type { Node } from "./App";
-import Patient from "./Setting";
-
 
 type Props = {
   userId: string;
   treeData: Node[]; 
-  setTreeData: React.Dispatch<React.SetStateAction<Node[]>>;
 };
 
 type UserSetting = {
@@ -23,25 +20,33 @@ type UserSetting = {
   setting: Node[];
 };
 
-const ExpertDashboard: React.FC<Props> = ({ userId, treeData, setTreeData }) => {
+const ExpertDashboard: React.FC<Props> = ({ userId, treeData }) => {
   const [allSettings, setAllSettings] = useState<UserSetting[]>([]);
-  const [settings, setSettings] = useState<Node[]>([]);
+  const [settings, setSettings] = useState<UserSetting>();
 
-  const fetchAllSettings = async () => {
+  const UpdateSettings = async () => {
+    try {
+      const res = await axios.patch("http://localhost:4040/api/setting", {
+        params: { sertting: userId },
+      });
+      setAllSettings(res.data);
+    } catch (err) {
+      console.error("Failed to fetch settings:", err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchAllSettings = async () => {
       try {
         const res = await axios.get("http://localhost:4040/api/setting", {
           params: { user_id: userId },
         });
         setAllSettings(res.data);
-        const res2 = await axios.get(`http://localhost:4040/api/setting?user_id=Patient1`);
-        setSettings(res2.data.setting);
+        setSettings(res.data[0]);
       } catch (err) {
         console.error("Failed to fetch settings:", err);
       }
     };
-    
-  useEffect(() => {
-    
 
     fetchAllSettings();
   }, [userId]);
@@ -83,14 +88,6 @@ const ExpertDashboard: React.FC<Props> = ({ userId, treeData, setTreeData }) => 
   };
 
   return (
-    <>
-      <Patient
-        userId={userId}
-        treeData={settings}
-        setTreeData={setSettings}
-        refresh={fetchAllSettings}
-      />
-
     <ScrollView contentContainerStyle={styles.container}>
       {allSettings.map((entry) => (
         <ReadOnlySetting
@@ -100,8 +97,6 @@ const ExpertDashboard: React.FC<Props> = ({ userId, treeData, setTreeData }) => 
         />
       ))}
     </ScrollView>
-    </>
-    
   );
 };
 

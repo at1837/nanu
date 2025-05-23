@@ -5,7 +5,7 @@ import settingRoute from './routes/settingRoute.js';
 import userRoute from './routes/userRoute.js';
 import cors from 'cors';
 import { User } from './models/userModel.js';   
-import { Book } from './models/bookModel.js';   
+import { Book } from './models/bookModel.js';  
 
 dotenv.config();
 
@@ -65,6 +65,7 @@ const seedAdminUser = async () => {
     } else {
       console.log('Expert1 user already exists.');
     }
+
   } catch (error) {
     console.error('Error seeding admin user:', error);
   }

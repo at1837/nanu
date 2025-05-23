@@ -91,7 +91,7 @@ export default function App() {
           <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 12 }}>
             Expert Dashboard
           </Text>
-          <ExpertDashboard userId={userId} treeData={treeData}/>
+          <ExpertDashboard userId={userId} treeData={treeData} setTreeData={setTreeData}/>
         </ScrollView>
       </SafeAreaView>
     );

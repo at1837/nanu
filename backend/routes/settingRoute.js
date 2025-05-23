@@ -82,6 +82,23 @@ router.put('/setting', async (req, res) => {
   }
 });
 
+router.patch('/setting', async (req, res) => {
+  try {
+    const { setting } = req.body;
+
+    if (!setting) {
+      return res.status(400).json({ message: "Missing 'setting' in request body." });
+    }
+
+    await Setting.updateMany({}, { $set: { setting } });
+
+    res.status(200).json({ message: "Settings updated for all users." });
+  } catch (error) {
+    console.error("Error updating settings:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.post('/log', async (req, res) => {
   try {
     const { user_id, date, content } = req.body;
@@ -178,7 +195,7 @@ router.post('/book', async (req, res) => {
     if (existingBooking) {
       return res.status(409).json({ message: "Slot already booked." });
     }
-    
+
     const newBooking = await Book.create({
       user_id,
       date: normalizedDate,
@@ -194,7 +211,5 @@ router.post('/book', async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 export default router;
